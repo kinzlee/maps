@@ -1,10 +1,11 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, KeyboardAvoidingView, TextInput } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import {Icon} from 'react-native-elements'
 import geolib, { getDistance, findNearest, orderByDistance } from 'geolib';
 import * as Location from 'expo-location';
+import RBSheet from "react-native-raw-bottom-sheet";
 import Constants from 'expo-constants'
 import ENV from '../env';
 import MapInput from '../components/MapInput';
@@ -20,7 +21,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 // const markerIDs = ['Marker1', 'Marker2', 'Marker3'];
 
 const CustomMarkers = () => {
- 
+ const refRBSheet = useRef();
   const [locationError, setLocationError] = useState('');
   const [state, setState] = useState({
     latitude: LATITUDE,
@@ -204,20 +205,11 @@ useEffect(() => {
     </MapView>
 
     <View>
-    <View style={styles.search}>
-        <MapInput
-        notifyChange={location => getCoordsFromName(location)}
-         />
+    <View>
+        <MapInput/>
     </View>
     <View style={styles.buttonContainer}>
-     <TouchableOpacity
-      style={[styles.bubble, styles.button]}
-      onPress={()=>toggleView}
-     >
-       <Text>Get Tractors Closest to you</Text>
-     </TouchableOpacity>
-     </View>
-     </View>
+     
       {/* { 
       <> 
       <View style={styles.dataContaner}>
@@ -228,6 +220,29 @@ useEffect(() => {
         </View>
         </>
         } */}
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <TouchableOpacity
+      style={[styles.bubble, styles.button]}
+      onPress={()=>refRBSheet.current.Open}
+     >
+       <Text>Get Tractors Closest to you</Text>
+     </TouchableOpacity>
+     </View>
+     </View>
+        <RBSheet
+          ref={refRBSheet}
+          height={300}
+          openDuration={250}
+          customStyles={{
+            container: {  
+              justifyContent: "center",
+              alignItems: "center"
+            }
+          }}
+        >
+          <View><TouchableOpacity onPress={() => [RBSheet + index].close()}><Text>close</Text></TouchableOpacity></View>
+        </RBSheet>
+      </View>
     
 
     </View>
