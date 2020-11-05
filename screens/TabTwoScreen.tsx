@@ -1,31 +1,17 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, Text, Button} from 'react-native';
-import {useCountDispatch} from './TabOneScreen'
+
 
 const Home  = ({navigation}:any) => {
-  const dispatch = useCountDispatch()
   return (
-    <View>
-      <Button title="increment" onPress={() =>dispatch({type:'increment'})} />
-      <Text>this is a count count system</Text>
+    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+      <Text style={{fontWeight:'bold', fontSize:30}}>This is the Home Page</Text>
+     
     </View>
   )
 }
 
 export default Home;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

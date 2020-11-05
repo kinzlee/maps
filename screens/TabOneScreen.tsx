@@ -1,6 +1,51 @@
-import React, {createContext, useContext, useReducer} from 'react';
+import React, {createContext, useContext, useState} from 'react';
 import {View, Text, Button} from 'react-native';
-import {UserContext} from '../context/useContext';
+import {useCountDisptach, useCountState, CountProvider} from '../context/useContext';
+
+
+const CountDisplay = () => {
+  const {count} = useCountState();
+  return(
+  <View>
+    <Text>{count}</Text>
+  </View>
+  )
+}
+
+const Counter = () => {
+  const dispatch = useCountDisptach();
+    return (
+      <View>
+      <Button title="increase" onPress={() => dispatch({type: 'increment'})} />
+      <Button title="decrease" onPress={() => dispatch({type:'decrement'})} />
+      </View>
+    )
+}
+
+
+const TestContxt = () => {
+  return (
+    <CountProvider>
+      <CountDisplay/>
+      <Counter />
+      </CountProvider>
+  )
+}
+
+export default TestContxt;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const About  = ({navigation}:any) => {
 //   const {value, setValue} = useContext(UserContext);
@@ -8,7 +53,7 @@ import {UserContext} from '../context/useContext';
 //     <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
 //       <Text style={{fontWeight:'bold', fontSize:30}}>This is the About Page</Text>
 //       <Text>{value}</Text>
-//       <Button title="changeVal" onPress={() => setValue('this is the new value')} />
+//       <Button title="changeVal" onPress={() => setValue('this is the new')} />
 //       <Button title="Go to about" onPress={() => navigation.navigate('TabTwo')} />
 //     </View>
 //   )
@@ -27,55 +72,54 @@ import {UserContext} from '../context/useContext';
 
 
 
-type Action = {type: 'increment'} | {type: 'decrement'}
-type Dispatch = (action:Action) => void;
-type State = {count: number}
-type CountProviderProps = {children:React.ReactNode}
+// type Action = {type: 'increment'} | {type: 'decrement'}
+// type Dispatch = (action:Action) => void;
+// type State = {count: number}
+// type CountProviderProps = {children:React.ReactNode}
 
-export const CountStateContext = createContext<State | undefined>(undefined);
-export const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
+// const CountStateContext = createContext<State | undefined>(undefined);
+// const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
 
- export const countReducer = (state:State, action:Action) => {
-  switch (action.type) {
-    case 'increment': {
-      return {count: state.count + 1}
-    } 
-    case 'decrement': {
-      return {count: state.count -1}
-    }
-    default : {
-      throw new Error(`unhandled action rejection: ${action}`)
-    }
-  }
-}
+// const countReducer = (state:State, action:Action) => {
+//   switch (action.type) {
+//     case 'increment': {
+//       return {count: state.count + 1}
+//     } 
+//     case 'decrement': {
+//       return {count: state.count -1}
+//     }
+//     default : {
+//       throw new Error(`unhandled action rejection: ${action}`)
+//     }
+//   }
+// }
 
-export const useCountState = () => {
-  const context = useContext(CountStateContext);
-  if(context == undefined) {
-    throw Error('useCount must be used inside a CountProvider')
-  }
-  return context;
-}
+// export const CountProvider = ({children}: CountProviderProps) => {
+//     const [state, dispatch] = useReducer(countReducer, {count: 0});
+//     return (
+//       <CountStateContext.Provider value={state}>
+//         <CountDispatchContext.Provider value={dispatch} >
+//           {children}
+//         </CountDispatchContext.Provider>
+//       </CountStateContext.Provider>
+//     )
+// }
 
-export const useCountDispatch = () => {
-  const context =  useContext(CountDispatchContext);
-  if(context == undefined) {
-    throw Error('useCountDispatch must be used inside a CounterProvider')
-  }
-  return context;
-}
+// export const useCountState = () => {
+//   const context = useContext(CountStateContext);
+//   if(context == undefined) {
+//     throw Error('useCount must be used inside a CountProvider')
+//   }
+//   return context;
+// }
 
-const Home  = ({navigation}:any) => {
-  const dispatch = useCountDispatch()
-  return (
-    <View>
-      <Button title="increment" onPress={() =>dispatch({type:'increment'})} />
-      <Text>this is a count count system {dispatch(count:0)}</Text>
-    </View>
-  )
-}
-
-export default Home;
+// export const useCountDispatch = () => {
+//   const context =  useContext(CountDispatchContext);
+//   if(context == undefined) {
+//     throw Error('useCountDispatch must be used inside a CounterProvider')
+//   }
+//   return context;
+// }
 
 
 

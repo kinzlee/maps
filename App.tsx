@@ -1,14 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useReducer} from 'react';
+import React, {useState, useMemo} from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import {CountStateContext, CountDispatchContext, countReducer}from './screens/TabOneScreen'
+import {UserContext} from './context/useContext';
 
 export default function App() {
-    const [state, dispatch] = useReducer(countReducer, {count: 0});
+  const [value, setValue] = useState('this is not a drill')
+  const providerValue = useMemo<string | any>(() => ({value, setValue}), [value, setValue] )
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -16,14 +17,12 @@ export default function App() {
     return null;
   } else {
     return (
-      <CountStateContext.Provider value={state}>
-        <CountDispatchContext.Provider value={dispatch} >
+      <UserContext.Provider value={providerValue}>
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>
-      </CountDispatchContext.Provider>
-      </CountStateContext.Provider>
+      </UserContext.Provider>
     );
   }
 }
