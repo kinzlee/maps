@@ -10,14 +10,14 @@ const CountDispatchContext = createContext<any>(null);
 
 const countReducer = (action:any, state:any) => {
     switch(action.type) {
-    case 'increment': {
+    case 'INCREMENT': {
       return {count: state.count + 1}
     }
-    case 'decrement': {
+    case 'DECREMENT': {
       return {count: state.count - 1}
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
+    throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
 }
@@ -43,7 +43,7 @@ export const useCountState = () => {
 
 export const useCountDisptach = () => {
     const context = useContext(CountDispatchContext);
-    if(context == undefined) {
+    if(context === undefined) {
         throw new Error('useCountReducer must be within a provider')
     }
     return context

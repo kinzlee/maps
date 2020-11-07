@@ -14,11 +14,11 @@ const CountDisplay = () => {
 
 const Counter = () => {
   const dispatch = useCountDisptach();
-  console.log(dispatch())
+  console.log(dispatch({type:'DECREMENT'}))
     return (
       <View>
-      <Button title="increase" onPress={() => (console.log(dispatch({type: 'increment'})))} />
-      <Button title="decrease" onPress={() => dispatch({type:'decrement'})} />
+      <Button title="increase" onPress={() => (console.log(dispatch({type: 'INCREMENT'})))} />
+      <Button title="decrease" onPress={() => dispatch({type:'DECREMENT'})} />
       </View>
     )
 }
