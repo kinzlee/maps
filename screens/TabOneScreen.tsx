@@ -7,20 +7,23 @@ const CountDisplay = () => {
   const {count} = useCountState();
   return(
   <View>
-    <Text>{count}</Text>
+    <Text>{`The current count is ${count}`}</Text>
   </View>
   )
 }
 
 const Counter = () => {
   const dispatch = useCountDisptach();
+  console.log(dispatch())
     return (
       <View>
-      <Button title="increase" onPress={() => dispatch({type: 'increment'})} />
+      <Button title="increase" onPress={() => (console.log(dispatch({type: 'increment'})))} />
       <Button title="decrease" onPress={() => dispatch({type:'decrement'})} />
       </View>
     )
 }
+
+
 
 
 const TestContxt = () => {
