@@ -8,22 +8,33 @@ type CountProviderProps = {children:React.ReactNode}
  const CountStateContext = createContext<any>(null);
 const CountDispatchContext = createContext<any>(null);
 
-const countReducer = (action:any, state:any) => {
-    switch(action.type) {
-    case 'INCREMENT': {
-      return {count: state.count + 1}
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+const state = {
+        count: 0
+}
+
+const countReducer = (type, states=state): any => {
+    switch(type) {
+    case INCREMENT: {
+      return {
+          ...states,
+          count: states.count + 1}
     }
-    case 'DECREMENT': {
-      return {count: state.count - 1}
+    case DECREMENT: {
+      return {
+          ...states,
+          count: states.count - 1}
     }
     default: {
-    throw new Error(`Unhandled action type: ${action.type}`)
+        return state;
     }
   }
 }
 
 export const CountProvider = ({children}: CountProviderProps) => {
-    const [state, dispatch] = useReducer<any>(countReducer, {count: 0})
+    const [state, dispatch] = useReducer<any>(countReducer, state)
             return (
                 <CountStateContext.Provider value={state}>
                     <CountDispatchContext.Provider value={dispatch}>

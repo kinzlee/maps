@@ -1,37 +1,47 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, useReducer} from 'react';
 import {View, Text, Button} from 'react-native';
 import {useCountDisptach, useCountState, CountProvider} from '../context/useContext';
 
 
-const CountDisplay = () => {
-  const {count} = useCountState();
-  return(
-  <View>
-    <Text>{`The current count is ${count}`}</Text>
-  </View>
-  )
-}
+// const CountDisplay = () => {
+//   const {count} = useCountState();
+//   return(
+//   <View>
+//     <Text>{`The current count is ${count}`}</Text>
+//   </View>
+//   )
+// }
 
-const Counter = () => {
-  const dispatch = useCountDisptach();
-  console.log(dispatch({type:'DECREMENT'}))
-    return (
-      <View>
-      <Button title="increase" onPress={() => (console.log(dispatch({type: 'INCREMENT'})))} />
-      <Button title="decrease" onPress={() => dispatch({type:'DECREMENT'})} />
-      </View>
-    )
-}
+// const Counter = () => {
+//   const dispatch = useCountDisptach();
+//   console.log(dispatch({type:'DECREMENT'}))
+//     return (
+//       <View>
+//       <Button title="increase" onPress={() => (console.log(dispatch({type: 'INCREMENT'})))} />
+//       <Button title="decrease" onPress={() => dispatch({type:'DECREMENT'})} />
+//       </View>
+//     )
+// }
+  const counter = 0
 
+const reducer = (state, action) => {
+    switch(action) {
+      case 'increment': return state +1;
+      case 'decrement': return state -1;
+      case 'reset': return 0;
+      default: throw new Error('unexpected action';)
+  }}
 
 
 
 const TestContxt = () => {
+  const [state, dispatch] = useReducer<any>(reducer, counter)
   return (
-    <CountProvider>
-      <CountDisplay/>
-      <Counter />
-      </CountProvider>
+    <View>
+      <Text>counter:{state}</Text>
+      <Button title="increment" onPress={(e) => dispatch('increment')} />
+      <Button title="decreement" onPress={(e) => dispatch('decrement')} />
+    </View>
   )
 }
 
