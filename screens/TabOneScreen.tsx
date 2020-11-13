@@ -29,13 +29,23 @@ const reducer = (state, action) => {
       case 'increment': return state +1;
       case 'decrement': return state -1;
       case 'reset': return 0;
-      default: throw new Error('unexpected action';)
+      default: throw new Error('unexpected action')
   }}
 
 
 
 const TestContxt = () => {
   const [state, dispatch] = useReducer<any>(reducer, counter)
+
+
+  const mult = (factor) => {
+    return numb => numb * factor;
+  }
+
+  const test = mult(3);
+  console.log(test(5));
+
+
   return (
     <View>
       <Text>counter:{state}</Text>
@@ -46,6 +56,8 @@ const TestContxt = () => {
 }
 
 export default TestContxt;
+
+
 
 
 
