@@ -1,20 +1,59 @@
-import React from 'react';
-import {View, Text, Button} from 'react-native';
+import React, {useState, useReducer, useEffect} from 'react';
+import {View, Text, ActivityIndicator} from 'react-native';
+import axios from 'axios';
+import {Map, List, fromJS } from'immutable';
 
+const initialState = {
+    user: {},
+    loading:true,
+    error: ''
+  }
+  const reduce = (state, action) => {
+    switch(action.type) {
+      case 'onSuccess':
+        return{
+          loading: false,
+          user:action.payyload,
+          error: ''
+        }
+        case 'onFailure':
+          return{
+            loading:false,
+            user: {},
+            error: 'something went wrong'
+          }
+          default:
+            return state;
+    }
+  }
+  const newUser = fromJS(initialState.user);
 
-const Home  = ({navigation}:any) => {
+const GetData = () => {
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState('');
+  // const [user, setUser] = useState({});
+  const [state, dispatch] = useReducer(reduce, initialState) 
+
+  useEffect(() => {
+      axios.get('https://test/api')  
+            .then(response => {  
+            dispatch({type: 'onSuccess', payload:response.data.data}) 
+            })  
+            .catch(error => {  
+            dispatch('onFailure')  
+            })
+  }, [])
+
   return (
-    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
-      <Text style={{fontWeight:'bold', fontSize:30}}>This is the Home Page</Text>
-     
+    <View>
+      {initialState.loading?(<ActivityIndicator size={20} color={'red'} />) : newUser}
     </View>
   )
+
+
 }
 
-export default Home;
-
-
-
+export default GetData;
 
 
 

@@ -20,12 +20,12 @@ const countReducer = (type, states=state): any => {
     case INCREMENT: {
       return {
           ...states,
-          count: states.count + 1}
+          count: state.count + 1}
     }
     case DECREMENT: {
       return {
           ...states,
-          count: states.count - 1}
+          count: state.count - 1}
     }
     default: {
         return state;

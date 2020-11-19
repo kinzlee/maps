@@ -38,12 +38,17 @@ const TestContxt = () => {
   const [state, dispatch] = useReducer<any>(reducer, counter)
 
 
-  const mult = (factor) => {
-    return numb => numb * factor;
+  const powerRaise = (base, component) => {
+    if(component === 0) {
+      return component = 1;
+    } else {
+      return base * powerRaise(base, component - 1)
+    }
   }
 
-  const test = mult(3);
-  console.log(test(5));
+  console.log(powerRaise(2,5))
+    
+
 
 
   return (
