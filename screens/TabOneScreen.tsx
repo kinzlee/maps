@@ -1,66 +1,34 @@
-import React, {createContext, useContext, useState, useReducer} from 'react';
-import {View, Text, Button} from 'react-native';
-import {useCountDisptach, useCountState, CountProvider} from '../context/useContext';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
+const data = [
+  { quarter: 1, earnings: 13000 },
+  { quarter: 2, earnings: 16500 },
+  { quarter: 3, earnings: 14250 },
+  { quarter: 4, earnings: 19000 }
+];
 
-// const CountDisplay = () => {
-//   const {count} = useCountState();
-//   return(
-//   <View>
-//     <Text>{`The current count is ${count}`}</Text>
-//   </View>
-//   )
-// }
-
-// const Counter = () => {
-//   const dispatch = useCountDisptach();
-//   console.log(dispatch({type:'DECREMENT'}))
-//     return (
-//       <View>
-//       <Button title="increase" onPress={() => (console.log(dispatch({type: 'INCREMENT'})))} />
-//       <Button title="decrease" onPress={() => dispatch({type:'DECREMENT'})} />
-//       </View>
-//     )
-// }
-  const counter = 0
-
-const reducer = (state, action) => {
-    switch(action) {
-      case 'increment': return state +1;
-      case 'decrement': return state -1;
-      case 'reset': return 0;
-      default: throw new Error('unexpected action')
-  }}
-
-
-
-const TestContxt = () => {
-  const [state, dispatch] = useReducer<any>(reducer, counter)
-
-
-  const powerRaise = (base, component) => {
-    if(component === 0) {
-      return component = 1;
-    } else {
-      return base * powerRaise(base, component - 1)
-    }
+export default class ExampleChart extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <VictoryChart width={350} theme={VictoryTheme.material}>
+          <VictoryBar data={data} x="quarter" y="earnings" />
+        </VictoryChart>
+      </View>
+    );
   }
-
-  console.log(powerRaise(2,5))
-    
-
-
-
-  return (
-    <View>
-      <Text>counter:{state}</Text>
-      <Button title="increment" onPress={(e) => dispatch('increment')} />
-      <Button title="decreement" onPress={(e) => dispatch('decrement')} />
-    </View>
-  )
 }
 
-export default TestContxt;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5fcff"
+  }
+});
 
 
 
