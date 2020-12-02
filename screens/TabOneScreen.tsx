@@ -1,34 +1,94 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import React, {useReducer, useContext} from 'react';
+import {View, Text, Button} from 'react-native';
 
-const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
-];
 
-export default class ExampleChart extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <VictoryChart width={350} theme={VictoryTheme.material}>
-          <VictoryBar data={data} x="quarter" y="earnings" />
-        </VictoryChart>
-      </View>
-    );
+
+const About  = ({navigation}:any) => {
+
+
+  const funcPrime  = (num:any, division = 2):any => {
+      if(num < 2 || (num > 2 && num % division === 0)) {
+        return false;
+      }
+      if(division <= Math.sqrt(num)) {
+        return funcPrime(num, division + 1)
+      }
+      return true
+  }
+
+  console.log(funcPrime(9), 'prrrrriiiiimeee')
+  const {value, setValue} = useContext(UserContext);
+  return (
+    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+      <Text style={{fontWeight:'bold', fontSize:30}}>This is the About Page</Text>
+      <Text>{value}</Text>
+      <Button title="changeVal" onPress={() => setValue('this is the new')} />
+      <Button title="Go to about" onPress={() => navigation.navigate('TabTwo')} />
+    </View>
+  )
+}
+
+export default About
+
+
+
+
+
+
+
+
+
+
+
+
+type Action = {type: 'increment'} | {type: 'decrement'}
+type Dispatch = (action:Action) => void;
+type State = {count: number}
+type CountProviderProps = {children:React.ReactNode}
+
+const CountStateContext = createContext<State | undefined>(undefined);
+const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
+
+const countReducer = (state:State, action:Action) => {
+  switch (action.type) {
+    case 'increment': {
+      return {count: state.count + 1}
+    } 
+    case 'decrement': {
+      return {count: state.count -1}
+    }
+    default : {
+      throw new Error(`unhandled action rejection: ${action}`)
+    }
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5fcff"
+export const CountProvider = ({children}: CountProviderProps) => {
+    const [state, dispatch] = useReducer(countReducer, {count: 0});
+    return (
+      <CountStateContext.Provider value={state}>
+        <CountDispatchContext.Provider value={dispatch} >
+          {children}
+        </CountDispatchContext.Provider>
+      </CountStateContext.Provider>
+    )
+}
+
+export const useCountState = () => {
+  const context = useContext(CountStateContext);
+  if(context == undefined) {
+    throw Error('useCount must be used inside a CountProvider')
   }
-});
+  return context;
+}
+
+export const useCountDispatch = () => {
+  const context =  useContext(CountDispatchContext);
+  if(context == undefined) {
+    throw Error('useCountDispatch must be used inside a CounterProvider')
+  }
+  return context;
+}
 
 
 
@@ -45,19 +105,6 @@ const styles = StyleSheet.create({
 
 
 
-// const About  = ({navigation}:any) => {
-//   const {value, setValue} = useContext(UserContext);
-//   return (
-//     <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
-//       <Text style={{fontWeight:'bold', fontSize:30}}>This is the About Page</Text>
-//       <Text>{value}</Text>
-//       <Button title="changeVal" onPress={() => setValue('this is the new')} />
-//       <Button title="Go to about" onPress={() => navigation.navigate('TabTwo')} />
-//     </View>
-//   )
-// }
-
-// export default About
 
 
 
@@ -70,84 +117,80 @@ const styles = StyleSheet.create({
 
 
 
-// type Action = {type: 'increment'} | {type: 'decrement'}
-// type Dispatch = (action:Action) => void;
-// type State = {count: number}
-// type CountProviderProps = {children:React.ReactNode}
 
-// const CountStateContext = createContext<State | undefined>(undefined);
-// const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
+// import React, { Component } from "react";
+// import {
+//   VictoryLine,
+//   VictoryChart,
+//   VictoryVoronoiContainer,
+//   VictoryTooltip,
+//   VictoryAxis
+// } from "victory-native";
+// import {ScrollView, View, Dimensions} from 'react-native';
 
-// const countReducer = (state:State, action:Action) => {
-//   switch (action.type) {
-//     case 'increment': {
-//       return {count: state.count + 1}
-//     } 
-//     case 'decrement': {
-//       return {count: state.count -1}
-//     }
-//     default : {
-//       throw new Error(`unhandled action rejection: ${action}`)
-//     }
+// export default class Tacos extends Component {
+//   constructor() {
+//     super();
+//     this.state = {  
+//       data: [
+//         { x: "Sun", y: 3, label: "here" },
+//         { x: "Mon", y: 6, label: "there" },
+//         { x: "Tue", y: 2, label: "where" },
+//         {
+//           x: "Wed",
+//           y: 6,
+//           label: "you they fear"
+//         },
+//         { x: "Thur", y: 4, label: "sheyrere" },
+//         { x: "Fri", y: 5, label: "u dey hear" },
+//         { x: "Sat", y: 1, label: "i dey here" },
+//         { x: "Sun", y: 7, label: "mayaree" }
+//       ]
+//     };
 //   }
-// }
 
-// export const CountProvider = ({children}: CountProviderProps) => {
-//     const [state, dispatch] = useReducer(countReducer, {count: 0});
+
+//   render() {
 //     return (
-//       <CountStateContext.Provider value={state}>
-//         <CountDispatchContext.Provider value={dispatch} >
-//           {children}
-//         </CountDispatchContext.Provider>
-//       </CountStateContext.Provider>
-//     )
-// }
-
-// export const useCountState = () => {
-//   const context = useContext(CountStateContext);
-//   if(context == undefined) {
-//     throw Error('useCount must be used inside a CountProvider')
+//       <View style={{flex:0.5, justifyContent:'center', alignItems:'center', height:'100%', width:'100%', padding:20}}>
+//       <ScrollView>
+//         <VictoryChart
+//         height={Dimensions.get("window").height * 0.6}
+//         width={Dimensions.get("window").width}
+//           containerComponent={
+//             <VictoryVoronoiContainer label={d => `${d.label}`} mouseFollowTooltips voronoiDimension="x" />
+//           }
+//         >
+//           <VictoryAxis
+//            />
+//           <VictoryLine
+//           // containerComponent={
+//           //   // <VictoryVoronoiContainer label={d => `${d.label}`} />
+//           // }
+//         //     labelComponent={<VictoryTooltip
+//         //     renderInPortal={false}
+//         //       cornerRadius={0}
+//         //       pointerWidth={1}
+//         //       pointerLength={35}
+//         //       flyoutStyle={{
+//         //   stroke: ({ datum }) => datum.x === 10
+//         //     ? "tomato"
+//         //     : "black"
+//         // }}
+//         //      />}
+//             data={this.state.data}
+//             style={{
+//               data: {
+//                 stroke: "#02B875"
+//               }
+//             }}
+//           />
+//         </VictoryChart>
+//         </ScrollView>
+//         </View>
+//     );
 //   }
-//   return context;
 // }
-
-// export const useCountDispatch = () => {
-//   const context =  useContext(CountDispatchContext);
-//   if(context == undefined) {
-//     throw Error('useCountDispatch must be used inside a CounterProvider')
-//   }
-//   return context;
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
