@@ -70,7 +70,8 @@ class AbstractChart<
         } else if (min < 0 && max <= 0) {
             return this.props.fromZero
                 ? height * (val / this.calcScaler(data))
-                : height * ((val - max) / this.calcScaler(data));
+                : height * ((val - max) / this.calcScaler(data)); 
+                
         }
     };
 

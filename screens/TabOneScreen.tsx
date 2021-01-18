@@ -1,30 +1,34 @@
-import React, {useReducer, useContext} from 'react';
+import React from 'react';
 import {View, Text, Button} from 'react-native';
+import Animated from 'react-native-reanimated'
 
 
 
 const About  = ({navigation}:any) => {
 
+  const slides = [
+    {
+      color: "#3984FF",
+      picture: require('../assets/images/tstImg.png'),
+      aspectRatio: 439.7/470.5
+    },
+    {
+      color: "#3984FF",
+      picture: require('../assets/images/tstImg.png'),
+      aspectRatio: 439.7/470.5
+    },
+    {
+      color: "#3984FF",
+      picture: require('../assets/images/tstImg.png'),
+      aspectRatio: 439.7/470.5
+    }
+  ]
 
-  const funcPrime  = (num:any, division = 2):any => {
-      if(num < 2 || (num > 2 && num % division === 0)) {
-        return false;
-      }
-      if(division <= Math.sqrt(num)) {
-        return funcPrime(num, division + 1)
-      }
-      return true
-  }
 
-  console.log(funcPrime(9), 'prrrrriiiiimeee')
-  const {value, setValue} = useContext(UserContext);
   return (
-    <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
-      <Text style={{fontWeight:'bold', fontSize:30}}>This is the About Page</Text>
-      <Text>{value}</Text>
-      <Button title="changeVal" onPress={() => setValue('this is the new')} />
-      <Button title="Go to about" onPress={() => navigation.navigate('TabTwo')} />
-    </View>
+      <Animated.ScrollView>
+        {slides.map((slide, index) => <Slide slide={slide} key={index} index={index} />)}
+      </Animated.ScrollView>
   )
 }
 
@@ -41,54 +45,213 @@ export default About
 
 
 
-type Action = {type: 'increment'} | {type: 'decrement'}
-type Dispatch = (action:Action) => void;
-type State = {count: number}
-type CountProviderProps = {children:React.ReactNode}
 
-const CountStateContext = createContext<State | undefined>(undefined);
-const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
+// const funcPrime  = (num:any, division = 2):any => {
+//       if(num < 2 || (num > 2 && num % division === 0)) {
+//         return false;
+//       }
+//       if(division <= Math.sqrt(num)) {
+//         return funcPrime(num, division + 1)
+//       }
+//       return true
+//   }
 
-const countReducer = (state:State, action:Action) => {
-  switch (action.type) {
-    case 'increment': {
-      return {count: state.count + 1}
-    } 
-    case 'decrement': {
-      return {count: state.count -1}
-    }
-    default : {
-      throw new Error(`unhandled action rejection: ${action}`)
-    }
-  }
-}
+//   console.log(funcPrime(9), 'prrrrriiiiimeee');
 
-export const CountProvider = ({children}: CountProviderProps) => {
-    const [state, dispatch] = useReducer(countReducer, {count: 0});
-    return (
-      <CountStateContext.Provider value={state}>
-        <CountDispatchContext.Provider value={dispatch} >
-          {children}
-        </CountDispatchContext.Provider>
-      </CountStateContext.Provider>
-    )
-}
 
-export const useCountState = () => {
-  const context = useContext(CountStateContext);
-  if(context == undefined) {
-    throw Error('useCount must be used inside a CountProvider')
-  }
-  return context;
-}
 
-export const useCountDispatch = () => {
-  const context =  useContext(CountDispatchContext);
-  if(context == undefined) {
-    throw Error('useCountDispatch must be used inside a CounterProvider')
-  }
-  return context;
-}
+// const fib = (n:number):any => {
+//   if(n <= 1) {
+//     return n;
+//   }
+//   return fib(n-2) + fib(n-1);
+// }
+
+// console.log(fib(8), 'fibonaaa')
+
+// const arrayAdd = (arr: any) => {
+//   const numbers = arr;
+//   const add = (a:any, b:any) => {
+//     return a + b;
+//   }
+//   const sum = numbers.reduce(add);
+//   return sum
+// }
+
+// console.log(arrayAdd([3,3,37,8]), 'arraararaa');
+
+
+
+// const isEven = (v:any) => {
+//   if(v === 0) return true;
+//   return isOdd(Math.abs(v) -1);
+// }
+
+// const isOdd = (v:any):any => {
+//   if(v === 0) return false;
+//   return isEven(Math.abs(v) -1);
+// }
+
+// console.log(isEven(9), 'even nott', isOdd(9), 'should be odd')
+
+
+
+// const compare = (arrOne:any, arrTwo:any) => {
+//     const {A, B} = arrOne.reduce((acc:any, cur:any) => {
+//       const {counter} = acc;
+
+//       if(arrOne[counter] > arrTwo[counter]) {
+//         acc.A++
+//       } else if(arrTwo[counter] > arrOne[counter]) {
+//         acc.B++
+//       }
+
+//       acc.counter++;
+//       return acc
+
+//     },{A: 0, B:0, counter: 0})
+//     return [A, B]
+// }
+
+// const compareTwo = (arrOne:any, arrTwo:any) => {
+//   let A = 0, B = 0;
+//   const result:any = [];
+//   for ( let counter=0; counter < arrOne.length; counter++) {
+//       if(arrOne[counter] > arrTwo[counter]) {
+//          A++;
+//       } else if(arrTwo[counter] > arrOne[counter]) {
+//         B++;
+//       }
+
+//     // return {arrOne, arrTwo}
+//   }
+//   return [A,B]
+// }
+
+// const convert = (arrConv:any) => {
+// const result = arrConv.reduce((acc:any, cur:any) => {
+//       const val =  cur.first.toUpperCase();
+//       acc.push(val);
+//       return acc;
+// },[])
+//       return result;
+// };
+
+
+// console.log(convert([{first:'mike'}, {first:'jimmy'}, {first:'steve'}]), '.......')
+// console.log(compareTwo([1,2,3], [3,3,4]), 'conparing arraysss')
+
+
+
+
+
+
+
+// const arrAddition = (x) => {
+//   let total = 0;
+//   for(let i in x) {
+//     total += x[i]
+//   }
+//   return total;
+// }
+
+
+// const tstArr = [4, 4, 5, 6, 7];
+
+// console.log(arrAddition(tstArr), '//////////ppppppp');
+
+
+// const matrix = [[3],[11, 2, 4], [4, 5, 6], [10, 8, -12]];
+
+// const dimensionDifferentiation = (mtrx) => {
+//   let dimensionOne = 0, dimensionTwo = 0;
+//   for(let row = 0; row < mtrx.length; row++) {
+//     if(mtrx[row] <= 1) {
+//       return;
+//     }
+//     dimensionOne += mtrx[row][row];
+//     dimensionTwo += mtrx[row][mtrx.length - row - 1]
+//   }
+
+//   return dimensionTwo - dimensionOne;
+// }
+
+// console.log(dimensionDifferentiation(matrix), 'matrix');
+
+
+
+
+
+
+
+
+// const flattenArray = (data: any) => {
+//   const initialValue:[] = [];
+//   const reducerFunc = () => {
+//     return data.reduce((total:any, value:any) => {
+//       return total.concat(Array.isArray(value) ? flattenArray(value) : value)
+//     }, initialValue)
+//   }
+
+//   return reducerFunc;
+// }
+
+
+
+
+
+
+
+
+
+// type Action = {type: 'increment'} | {type: 'decrement'}
+// type Dispatch = (action:Action) => void;
+// type State = {count: number}
+// type CountProviderProps = {children:React.ReactNode}
+
+// const CountStateContext = createContext<State | undefined>(undefined);
+// const CountDispatchContext = createContext<Dispatch | undefined>(undefined);
+
+// const countReducer = (state:State, action:Action) => {
+//   switch (action.type) {
+//     case 'increment': {
+//       return {count: state.count + 1}
+//     } 
+//     case 'decrement': {
+//       return {count: state.count -1}
+//     }
+//     default : {
+//       throw new Error(`unhandled action rejection: ${action}`)
+//     }
+//   }
+// }
+
+// export const CountProvider = ({children}: CountProviderProps) => {
+//     const [state, dispatch] = useReducer(countReducer, {count: 0});
+//     return (
+//       <CountStateContext.Provider value={state}>
+//         <CountDispatchContext.Provider value={dispatch} >
+//           {children}
+//         </CountDispatchContext.Provider>
+//       </CountStateContext.Provider>
+//     )
+// }
+
+// export const useCountState = () => {
+//   const context = useContext(CountStateContext);
+//   if(context == undefined) {
+//     throw Error('useCount must be used inside a CountProvider')
+//   }
+//   return context;
+// }
+
+// export const useCountDispatch = () => {
+//   const context =  useContext(CountDispatchContext);
+//   if(context == undefined) {
+//     throw Error('useCountDispatch must be used inside a CounterProvider')
+//   }
+//   return context;
+// }
 
 
 
